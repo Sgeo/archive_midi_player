@@ -24,7 +24,8 @@ document.querySelector("#stop").addEventListener("click", function() {
     let files = filesDocument.querySelectorAll("file[source='original']");
     let songsElement = document.querySelector("#songs");
     files.forEach(file => {
-        if(file.querySelector("format")?.textContent != "MIDI") return;
+        let formatNode = file.querySelector("format");
+        if(!formatNode || !formatNode.textContent || formatNode.textContent !== "MIDI") return;
 
         let filename = file.getAttribute("name");
 
