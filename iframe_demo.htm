@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>midi.js iframe demo</title>
+        <script>
+            function initIframe() {
+                let iframe = document.createElement("iframe");
+                iframe.src = "midijs_iframe.htm";
+                iframe.addEventListener("load", function() {
+                    window.MIDI = iframe.contentWindow.MIDI;
+                    /*
+                    MIDI.loadPlugin({soundfontUrl: "https://gleitz.github.io/midi-js-soundfonts/FatBoy/",
+                    //instruments: [...Array(128).keys()].map(i => i+1),
+                    onsuccess: function() {
+                        alert("Soundfont loaded.");
+                    }});
+                    */
+                });
+                document.body.append(iframe);
+            }
+
+            async function play(url, soundfont) {
+                MIDI.soundfontUrl = soundfont;
+                MIDI.Soundfont = {};
+                await new Promise((resolve, reject) => MIDI.Player.loadFile(url, resolve, x => x, reject));
+                let instruments = MIDI.Player.getFileInstruments();
+                console.log(instruments);
+                await new Promise((resolve, reject) => MIDI.loadPlugin({instruments: instruments, onsuccess: resolve, onerror: reject}));
+                MIDI.Player.start();
+            }
+        </script>
+    </head>
+    <body>
+        <button onclick="initIframe()">Initialize player</button>
+        <button onclick="play('http://cors.archive.org/cors/sgeos_midi_collection/2.mid', 'https://gleitz.github.io/midi-js-soundfonts/FluidR3_GM/')">Play 2.mid in Fluid</button>
+        <button onclick="play('http://cors.archive.org/cors/sgeos_midi_collection/2.mid', 'https://gleitz.github.io/midi-js-soundfonts/MusyngKite/')">Play 2.mid in Musyng Kite</button>
+        <button onclick="play('http://cors.archive.org/cors/sgeos_midi_collection/2.mid', 'https://gleitz.github.io/midi-js-soundfonts/FatBoy/')">Play 2.mid in FatBoy</button>
+    </body>
+</html>
