@@ -15,7 +15,7 @@ document.querySelector("#stop").addEventListener("click", function() {
 });
 
 (async function() {
-    
+    if(!archive_location) return;
     
     
     let filesDocument = await fetch(`https://cors.archive.org/cors/${archive_location}/${archive_location}_files.xml`)
