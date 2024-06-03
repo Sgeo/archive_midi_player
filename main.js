@@ -5,9 +5,14 @@ window.onhashchange = function() {
 let archive_location = window.location.hash.substring(1);
 let domParser = new DOMParser();
 
+let Player = new MidiPlayer.Player(function(event) {
+
+});
+
 function buttonHandler() {
     let url = `https://cors.archive.org/cors/${archive_location}/${this.dataset.filename}`;
-    MIDIjs.play(url);
+    Player.loadFile(url);
+    Player.play();
 }
 
 document.querySelector("#stop").addEventListener("click", function() {
